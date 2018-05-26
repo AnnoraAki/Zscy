@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/question_ask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
+        android:layout_marginRight="25dp"
+        android:backgroundTint="#7195FA"
+        android:elevation="1dp"
+        android:src="@drawable/ic_ask_ask"
+        app:borderWidth="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:rippleColor="#6898ff" />
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/ask_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background"
+        android:fitsSystemWindows="true">
+
+        <TextView
+            android:id="@+id/ask_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="邮 问"
+            android:textColor="#FFF"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/ask_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_inform" />
+
+        <ImageView
+            android:id="@+id/ask_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_screen" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/ask_bar"
+        >
+
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/question_tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll"
+            app:tabIndicatorColor="#6898FF"
+            app:tabIndicatorHeight="2.0dp"
+            app:tabMode="scrollable"
+            app:tabSelectedTextColor="#6898FF"
+            app:tabTextColor="#777777" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/mPaper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v4.view.ViewPager>
+
+
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>

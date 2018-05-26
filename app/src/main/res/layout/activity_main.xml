@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
+
+    </FrameLayout>
+
+    <RadioGroup
+        android:id="@+id/radio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:orientation="horizontal"
+        >
+
+        <RadioButton
+            android:id="@+id/main_class"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:text="课表"
+            android:textSize="15sp"
+            android:textColor="@drawable/select_word"
+            android:gravity="center"
+            android:drawableTop="@drawable/select_class"
+            android:checked="true"
+            />
+
+        <RadioButton
+            android:id="@+id/main_ask"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:text="邮问"
+            android:textSize="15sp"
+            android:textColor="@drawable/select_word"
+            android:gravity="center"
+            android:drawableTop="@drawable/select_ask"/>
+
+        <RadioButton
+            android:id="@+id/main_find"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:text="发现"
+            android:textSize="15sp"
+            android:textColor="@drawable/select_word"
+            android:gravity="center"
+            android:drawableTop="@drawable/select_find"/>
+
+        <RadioButton
+            android:id="@+id/main_me"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:text="我的"
+            android:textSize="15sp"
+            android:textColor="@drawable/select_word"
+            android:gravity="center"
+            android:drawableTop="@drawable/select_me"/>
+    </RadioGroup>
+</LinearLayout>
