@@ -39,12 +39,45 @@
    
 ### 运行图示
 
->没录到的地方就是没写...
+
+> 没录到的地方就是没写...
+
+
 ![登陆](https://github.com/Cchanges/Zscy/blob/master/gifs/1.gif)
+
+**登陆**
+
+
 ![拉取问题列表](https://github.com/Cchanges/Zscy/blob/master/gifs/2.gif)
+
+
+**拉取问题列表**
+
 ![查看问题详情](https://github.com/Cchanges/Zscy/blob/master/gifs/3.gif)
+
+
+**查看问题详情**
+
+
 ![添加回答](https://github.com/Cchanges/Zscy/blob/master/gifs/4.gif)
+
+**添加回答**
+
 ![查看回答详情/点赞](https://github.com/Cchanges/Zscy/blob/master/gifs/5.gif)
+
+**查看回答详情/点赞**
+
 ![添加评论](https://github.com/Cchanges/Zscy/blob/master/gifs/6.gif)
+
+**添加评论**
+
 ![提问（只实现了的部分内容）](https://github.com/Cchanges/Zscy/blob/master/gifs/7.gif)
+
+**提问（只实现了部分内容）**
+
+
+
 ![静默登陆](https://github.com/Cchanges/Zscy/blob/master/gifs/8.gif)
+
+
+**静默登陆**
