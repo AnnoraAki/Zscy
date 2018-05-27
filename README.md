@@ -4,6 +4,8 @@
 本次考核只写了总板块中的邮问部分，课表做了个假ui
 >是真的很惨..
 
+[app下载](https://github.com/Cchanges/Zscy/blob/master/app/release/app-release.apk "点击之后dowload下载...")
+
 ## 邮问实现的部分功能
 
 就感觉其实啥东西都没写（所以为什么写了这么久）
