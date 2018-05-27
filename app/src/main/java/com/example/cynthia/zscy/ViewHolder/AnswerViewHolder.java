@@ -32,10 +32,13 @@ public class AnswerViewHolder extends BaseViewHolder implements View.OnClickList
     private TextView praiseNum;
     private TextView lookMore;
 
+    private String kind;
 
-    public AnswerViewHolder(View itemView, final List<Answer> answers) {
+
+    public AnswerViewHolder(View itemView, final List<Answer> answers,String kind) {
         super(itemView);
         this.answers = answers;
+        this.kind = kind;
 
         avatar = getView(R.id.answer_avatar);
         id = getView(R.id.answer_id);
@@ -70,8 +73,13 @@ public class AnswerViewHolder extends BaseViewHolder implements View.OnClickList
                     .build();
         ImageLoad.show(avatar, setting);
         id.setText(answer.getNickname());
-        int res = answer.getGender().equals("男")?R.drawable.ic_answer_man:R.drawable.ic_answer_woman;
-        sex.setImageDrawable(Application.getContext().getResources().getDrawable(res));
+        if (kind.equals("情感")){
+            int res = answer.getGender().equals("男")?R.drawable.ic_answer_man:R.drawable.ic_answer_woman;
+            sex.setImageDrawable(Application.getContext().getResources().getDrawable(res));
+        } else {
+          sex.setVisibility(View.GONE);
+        }
+
         if (answer.getIs_adopted().equals("0")){
             accept.setVisibility(View.GONE);
             acceptWord.setVisibility(View.GONE);
@@ -85,12 +93,14 @@ public class AnswerViewHolder extends BaseViewHolder implements View.OnClickList
     @Override
     public void onClick(View v) {
         Answer answer = answers.get(getLayoutPosition());
-        String param = "stuNum="+Application.getAc()+"&idNum="+Application.getPw()+"&answer_id=" + answer.getId();
         switch (v.getId()) {
             case R.id.answer_look_more:
                 Intent intent = new Intent(v.getContext(), CommentActivity.class);
-                intent.putExtra("param",param);
+                intent.putExtra("aId",answer.getId());
                 v.getContext().startActivity(intent);
+                break;
+            case R.id.answer_accept:
+
                 break;
         }
     }

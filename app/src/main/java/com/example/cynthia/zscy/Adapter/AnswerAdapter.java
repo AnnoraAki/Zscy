@@ -19,12 +19,14 @@ import java.util.List;
 public class AnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Answer> answers;
     private int qId;
+    private String kind;
     private static final int TYPE_NOTICE = 0;
     private static final int TYPE_ANSWER = 1;
 
-    public AnswerAdapter(List<Answer> answers,int qId) {
+    public AnswerAdapter(List<Answer> answers,int qId,String kind) {
         this.answers = answers;
         this.qId = qId;
+        this.kind = kind;
     }
 
     @Override
@@ -38,7 +40,7 @@ public class AnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         switch (viewType) {
             case TYPE_ANSWER:
                 View view = inflater.inflate(R.layout.recycler_answers, parent, false);
-                return new AnswerViewHolder(view,answers);
+                return new AnswerViewHolder(view,answers,kind);
 
             case TYPE_NOTICE:
                 View view1 = inflater.inflate(R.layout.recycler_loading, parent, false);

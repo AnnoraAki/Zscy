@@ -31,6 +31,8 @@ public class BaseActivity extends AppCompatActivity {
     private TextView title;
     private ImageView left;
     private ImageView right;
+    private TextView rightT;
+    private TextView leftT;
     private Toolbar mToolbar;
     private RelativeLayout content;
     public HttpHelper helper;
@@ -45,6 +47,8 @@ public class BaseActivity extends AppCompatActivity {
         content = findViewById(R.id.layout_content);
         left = findViewById(R.id.bar_left);
         right = findViewById(R.id.bar_right);
+        rightT = findViewById(R.id.bar_right_t);
+        leftT = findViewById(R.id.bar_left_t);
 
         title.setTextSize(18);
 
@@ -68,24 +72,44 @@ public class BaseActivity extends AppCompatActivity {
         mToolbar.setVisibility(View.VISIBLE);
     }
 
-    public void setLeft(Drawable drawable){
+    public void setLeftDrawable(Drawable drawable){
         left.setImageDrawable(drawable);
+        leftT.setVisibility(View.GONE);
     }
 
-    public void setRight(Drawable drawable){
+    public void setLeftText(String text){
+        left.setVisibility(View.GONE);
+        leftT.setText(text);
+    }
+
+    public void setRightDrawable(Drawable drawable){
+        rightT.setVisibility(View.GONE);
         right.setImageDrawable(drawable);
+    }
+
+    public void setRightText(String text){
+        right.setVisibility(View.GONE);
+        rightT.setText(text);
     }
 
     public void setToolbarInvisible(){
         mToolbar.setVisibility(View.GONE);
     }
 
-    public void setLeftClick(View.OnClickListener listener){
+    public void setLeftTextClick(View.OnClickListener listener){
+        leftT.setOnClickListener(listener);
+    }
+
+    public void setLeftDrawableClick(View.OnClickListener listener){
         left.setOnClickListener(listener);
     }
 
-    public void setRightClick(View.OnClickListener listener){
+    public void setRightDrawableClick(View.OnClickListener listener){
         right.setOnClickListener(listener);
+    }
+
+    public void setRightTextClick(View.OnClickListener listener){
+        rightT.setOnClickListener(listener);
     }
 
     protected void checkProcession(){

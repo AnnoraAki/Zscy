@@ -1,5 +1,7 @@
 package com.example.cynthia.zscy.Activitys;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,6 +16,7 @@ import com.example.cynthia.zscy.Fragments.AskQuestionFragment;
 import com.example.cynthia.zscy.Fragments.ClassFragment;
 import com.example.cynthia.zscy.Fragments.FindFragment;
 import com.example.cynthia.zscy.R;
+import com.example.cynthia.zscy.Utils.Application;
 
 public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
 
@@ -121,4 +124,5 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         transaction.add(R.id.container, fragment, tag);
         transaction.commit();
     }
+
 }

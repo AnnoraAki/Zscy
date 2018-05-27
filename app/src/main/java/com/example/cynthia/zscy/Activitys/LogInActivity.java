@@ -1,9 +1,12 @@
 package com.example.cynthia.zscy.Activitys;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,21 +41,25 @@ public class LogInActivity extends BaseActivity {
             public void onClick(View v) {
                 final String ac = account.getText().toString();
                 final String pw = password.getText().toString();
-                helper = new HttpHelper.set().mode("POST").url(Config.VERIFY).
-                        param("stuNum="+ac+"&idNum="+pw).build();
-                new Response.from(helper).get(new Callback() {
-                    @Override
-                    public void succeed(String response) {
-                        Application.setAc(ac);
-                        Application.setPw(pw);
-                        startNew();
-                    }
+                if (ac.equals("") || pw.equals("")){
+                    ToastUtils.showError("未填写用户名和账号");
+                } else {
+                    helper = new HttpHelper.set().mode("POST").url(Config.VERIFY).
+                            param("stuNum="+ac+"&idNum="+pw).build();
+                    new Response.from(helper).get(new Callback() {
+                        @Override
+                        public void succeed(String response) {
+                            Application.setAc(ac);
+                            Application.setPw(pw);
+                            startNew(false);
+                        }
 
-                    @Override
-                    public void error(Exception e, int status) {
-
-                    }
-                });
+                        @Override
+                        public void error(Exception e, int status) {
+                            ToastUtils.showError(e.toString());
+                        }
+                    });
+                }
             }
         });
 
@@ -73,10 +80,20 @@ public class LogInActivity extends BaseActivity {
         login = findViewById(R.id.login);
     }
 
-    private void startNew(){
-        Intent intent = new Intent(LogInActivity.this,MainActivity.class);
-        startActivity(intent);
-        finish();
+    private void startNew(Boolean reload){
+            if (!reload) {
+                SharedPreferences sharedPreferences =
+                        getSharedPreferences("user", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("ac", Application.getAc());
+                editor.putString("pw", Application.getPw());
+                editor.commit();
+            }
+            Intent intent = new Intent(LogInActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
     }
 
+
 }
+

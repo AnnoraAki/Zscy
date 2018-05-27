@@ -7,6 +7,9 @@ import com.example.cynthia.httphelper.Json.JsonDispose;
 import com.example.cynthia.httphelper.Response.Callback;
 import com.example.cynthia.httphelper.HttpHelper;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,12 +29,31 @@ public class SendRequest<T> extends BasicConnection {
                     final int status = conn.getResponseCode();
                     if (status == HttpURLConnection.HTTP_OK) {
                         final String finish = getStringResponse(conn);
-                        UI_HANDLER.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                callback.succeed(finish);
-                            }
-                        });
+                        JSONObject object = null;
+                        int sta = 0;
+                        try {
+                            object = new JSONObject(finish);
+                            sta = object.getInt("status");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        if (sta == 200){
+                            UI_HANDLER.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    callback.succeed(finish);
+                                }
+                            });
+                        }else {
+                            final int stat = sta;
+                            UI_HANDLER.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    callback.error(new Exception("有点问题"), stat);
+                                }
+                            });
+                        }
+
                     } else {
                         UI_HANDLER.post(new Runnable() {
                             @Override

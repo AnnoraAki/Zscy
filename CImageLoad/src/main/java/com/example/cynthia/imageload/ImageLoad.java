@@ -52,7 +52,6 @@ public class ImageLoad {
             @Override
             public void run() {
 //              缓存内获取
-                String newUrl;
                 CacheStrategy cacheStrategy = setting.getmCacheStrategy();
                 Bitmap bitmap = cacheStrategy.getImage(setting.getmUrl(), setting.getParameters());
                 if (bitmap != null) {
@@ -81,7 +80,7 @@ public class ImageLoad {
         String address = setting.getmUrl();
         Bitmap bitmap = null;
         try {
-            bitmap = address.startsWith("http") ? withHttp(address) : withFile(address);
+            bitmap = address.startsWith("https") ? withHttp(address) : withFile(address);
         } catch (IOException e) {
             e.printStackTrace();
             backUIThread(bitmap, null, e);

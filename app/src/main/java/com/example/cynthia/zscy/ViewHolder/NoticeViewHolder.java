@@ -8,6 +8,7 @@ import com.example.cynthia.httphelper.HttpHelper;
 import com.example.cynthia.httphelper.Response.Callback;
 import com.example.cynthia.httphelper.Response.Response;
 import com.example.cynthia.zscy.Adapter.QuestionAdapter;
+import com.example.cynthia.zscy.Bean.Answer;
 import com.example.cynthia.zscy.Bean.Question;
 import com.example.cynthia.zscy.R;
 import com.example.cynthia.zscy.Utils.JsonUtils;
@@ -42,6 +43,9 @@ public class NoticeViewHolder extends BaseViewHolder {
         int n = 1;
         if ((adapter.getItemCount()-n)%6 != 0){
             mTextView.setText("没有更多了...");
+            return;
+        }else if(adapter.getItemCount() - n == 0){
+            mTextView.setText("这里什么都还没有，期待您的补充 ♪(^∇^*)");
             return;
         }
         if (loading)
@@ -85,7 +89,7 @@ public class NoticeViewHolder extends BaseViewHolder {
             List<Question> questions = JsonUtils.jsonQuestions(response);
             ((QuestionAdapter)adapter).addQuestions(questions);
         } else {
-
+//            List<Answer> answers
         }
 
 

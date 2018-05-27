@@ -37,7 +37,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         switch (viewType) {
             case TYPE_QUESTION:
                 View view = inflater.inflate(R.layout.recycler_questions, parent, false);
-                return new QuestionViewHolder(view,questions);
+                return new QuestionViewHolder(view,questions,kind);
 
             case TYPE_NOTICE:
                 View view1 = inflater.inflate(R.layout.recycler_loading, parent, false);
@@ -51,7 +51,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof QuestionViewHolder) {
             QuestionViewHolder questionViewHolder = (QuestionViewHolder) holder;
-            questionViewHolder.initData(questions.get(position));
+            questionViewHolder.initData(questions.get(position),kind);
         } else {
             NoticeViewHolder noticeViewHolder = (NoticeViewHolder) holder;
             String param = "page=" + (questions.size() / 6 + 1 ) + "&size=" + 6 + "&kind=" + kind;

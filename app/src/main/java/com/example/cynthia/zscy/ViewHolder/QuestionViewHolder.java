@@ -2,6 +2,7 @@ package com.example.cynthia.zscy.ViewHolder;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.cynthia.imageload.ConfigSetting;
@@ -25,9 +26,11 @@ public class QuestionViewHolder extends BaseViewHolder {
     private TextView context;
     private List<Question> mQuestion;
     private TextView lookMore;
+    private ImageView sex;
 
+    private String kind;
 
-    public QuestionViewHolder(View itemView,List<Question> questions) {
+    public QuestionViewHolder(View itemView, List<Question> questions, final String kind) {
         super(itemView);
         avatar = getView(R.id.question_avatar);
         time = getView(R.id.question_time);
@@ -37,24 +40,25 @@ public class QuestionViewHolder extends BaseViewHolder {
         title = getView(R.id.question_title);
         tag = getView(R.id.question_tag);
         lookMore = getView(R.id.question_look_more);
+        sex = getView(R.id.question_sex);
 
         mQuestion = questions;
+        this.kind = kind;
 
         lookMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Question question = mQuestion.get(getLayoutPosition());
-                String param = "stuNum="+Application.getAc()+"&idNum="+Application.getPw()+"&question_id=" + question.getId();
                 Intent intent = new Intent(v.getContext(), DetailActivity.class);
-                intent.putExtra("param",param);
                 intent.putExtra("qId",question.getId());
+                intent.putExtra("kind",kind);
                 v.getContext().startActivity(intent);
             }
         });
 
     }
 
-    public void initData(Question question) {
+    public void initData(Question question,String kind) {
         time.setText("小时后消失");//记得做一个时间戳
 
         price.setText(question.getReward() + "积分");
@@ -62,15 +66,21 @@ public class QuestionViewHolder extends BaseViewHolder {
         tag.setText("#" + question.getTags() + "#");
         title.setText(question.getTitle());
         userId.setText(question.getNickname());
-        if (question.getIs_anonymous() == 0) {
+        if (question.getPhoto_thumbnail_src().equals("") || question.getPhoto_thumbnail_src().equals("null")) {
+           avatar.setImageResource(R.drawable.default_avatar);
+           } else {
             ConfigSetting setting = new ConfigSetting.builder(Application.getContext())
                     .error(R.drawable.default_avatar)
                     .from(question.getPhoto_thumbnail_src())
                     .build();
             ImageLoad.show(avatar, setting);
+        }
 
+        if (kind.equals("情感")){
+            int temp = question.getGender().equals("男")?R.drawable.ic_question_man:R.drawable.ic_question_women;
+            sex.setImageDrawable(Application.getContext().getResources().getDrawable(temp));
         } else {
-            avatar.setImageResource(R.drawable.default_avatar);
+            sex.setVisibility(View.GONE);
         }
     }
 }

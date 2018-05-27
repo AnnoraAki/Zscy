@@ -23,7 +23,15 @@
             android:id="@+id/bar_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             />
+
+        <TextView
+            android:id="@+id/bar_left_t"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FEFEFE"
+            android:textSize="15sp"/>
 
         <ImageView
             android:id="@+id/bar_right"
@@ -32,6 +40,14 @@
             android:layout_gravity="end"
             android:layout_marginEnd="16dp"
             />
+
+        <TextView
+            android:id="@+id/bar_right_t"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FEFEFE"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"/>
 
     </android.support.v7.widget.Toolbar>
 
