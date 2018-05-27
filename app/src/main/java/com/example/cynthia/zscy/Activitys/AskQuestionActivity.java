@@ -1,7 +1,11 @@
 package com.example.cynthia.zscy.Activitys;
 
+import android.annotation.TargetApi;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.icu.util.Calendar;
+import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,6 +43,7 @@ public class AskQuestionActivity extends BaseActivity implements View.OnClickLis
     private TextView next;
     private TextView[] tags = new TextView[6];
     private AlertDialog d;
+    private DatePickerDialog datePickerDialog;
     private Question question = new Question();
 
     private int maxNum1 = 20;
@@ -73,7 +79,6 @@ public class AskQuestionActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void afterTextChanged(Editable s) {
                 titleFlag.setText(maxNum1-temp.length()+"");
-                TextUtil.setTVColor(temp.toString(),'#','#',R.color.titleBlue,title);
             }
         });
 
@@ -113,15 +118,17 @@ public class AskQuestionActivity extends BaseActivity implements View.OnClickLis
         titleFlag = findViewById(R.id.ask_title_flag);
         contentFlag = findViewById(R.id.ask_context_flag);
         setTagDialog();
+        setDateDialog();
     }
 
     @Override
     public void onClick(View v) {
-        String titles = title.getText().toString();
-        String descriptions = content.getText().toString();
-        String m = null;
+        String titles;
+        String descriptions;
         switch (v.getId()){
             case R.id.ask_tag:
+                titles = title.getText().toString();
+                descriptions = content.getText().toString();
                 if (titles.equals("")||descriptions.equals("")){
                     ToastUtils.showResponse("请填写好问题和内容之后才继续下一步动作哦");
                 } else {
@@ -152,32 +159,27 @@ public class AskQuestionActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.topic_physics:
                 tag.setText("#"+tagS[0]+"#");
-                m = tagS[0];
                 break;
             case R.id.topic_english:
                 tag.setText("#"+tagS[1]+"#");
-                m = tagS[1];
                 break;
             case R.id.topic_linear:
                 tag.setText("#"+tagS[2]+"#");
-                m = tagS[2];
                 break;
             case R.id.topic_math:
                 tag.setText("#"+tagS[3]+"#");
-                m = tagS[3];
                 break;
             case R.id.topic_geometry:
                 tag.setText("#"+tagS[4]+"#");
-                m = tagS[4];
                 break;
             case R.id.topic_politics:
                 tag.setText("#"+tagS[5]+"#");
-                m = tagS[5];
+
                 break;
-            case R.id.ask_add_tag:
+            case R.id.topic_next:
                 String t = tag.getText().toString();
                 if (t.startsWith("#")){
-                    t = m;
+                    t = t.replaceAll("#","");
                 }
                 if (t.equals("")){
                     ToastUtils.showError("请选择一个话题哦~");
@@ -188,6 +190,7 @@ public class AskQuestionActivity extends BaseActivity implements View.OnClickLis
                     TextUtil.setTVColor(temp,'#','#', Color.parseColor("#7195FA"),title);
                 }
                 d.dismiss();
+                datePickerDialog.show();
                 break;
         }
     }
@@ -212,9 +215,31 @@ public class AskQuestionActivity extends BaseActivity implements View.OnClickLis
         tags[4] = layout.findViewById(R.id.topic_geometry);
         tags[5] = layout.findViewById(R.id.topic_politics);
         next = layout.findViewById(R.id.topic_next);
-        tag = layout.findViewById(R.id.ask_add_tag);
+        tag = layout.findViewById(R.id.add_tag);
         for (int i = 0; i < 5; i++) {
             tags[i].setOnClickListener(this);
         }
+        next.setOnClickListener(this);
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    private void setDateDialog(){
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int monthOfYear = calendar.get(Calendar.MONTH);
+        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+        int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener()
+        {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth)
+            {
+                String temp = "日期：" + year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+                ToastUtils.showResponse(temp);
+            }
+        }, year, monthOfYear, dayOfMonth);
+
     }
 }
