@@ -1,8 +1,9 @@
 package com.example.cynthia.zscy.Bean;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Answer {
+public class Answer implements Serializable {
     /**
      * id : 10
      * nickname : Jay

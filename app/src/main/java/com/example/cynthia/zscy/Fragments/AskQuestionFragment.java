@@ -1,7 +1,9 @@
 package com.example.cynthia.zscy.Fragments;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,28 +12,39 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.example.cynthia.zscy.Activitys.AskQuestionActivity;
 import com.example.cynthia.zscy.Adapter.PaperAdapter;
 import com.example.cynthia.zscy.R;
 import com.example.cynthia.zscy.Utils.Application;
 
+import java.awt.font.TextAttribute;
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 public class AskQuestionFragment extends Fragment implements View.OnClickListener,RadioGroup.OnCheckedChangeListener {
     private TabLayout tab;
     private ViewPager viewpager;
     private PaperAdapter adapter;
     private FloatingActionButton floatingActionButton;
+    private TextView next;
+    private ImageView cancel;
+    private AlertDialog d;
     private String kind;
 
 
@@ -48,6 +61,7 @@ public class AskQuestionFragment extends Fragment implements View.OnClickListene
         tab = (TabLayout)view.findViewById(R.id.question_tab);
         viewpager = (ViewPager)view.findViewById(R.id.mPaper);
         floatingActionButton = view.findViewById(R.id.question_ask);
+        setDialog();
 
         List<Fragment> fragments = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -60,38 +74,24 @@ public class AskQuestionFragment extends Fragment implements View.OnClickListene
         tab.setupWithViewPager(viewpager);
 
         floatingActionButton.setOnClickListener(this);
-    }
-
-    private void showPopupWindow(){
-        View contentView = getActivity().getLayoutInflater().from(Application.getContext()).inflate(R.layout.popup_choose_type, null);
-        PopupWindow mPopWindow = new PopupWindow(contentView,
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT, true);
-        mPopWindow.setContentView(contentView);
-        View rootView = getActivity().getLayoutInflater().from(Application.getContext()).inflate(R.layout.fragment_ask_question, null);
-        mPopWindow.setTouchable(true);
-        mPopWindow.setOutsideTouchable(true);
-        setBackgroundAlpha(0.4f);
-        mPopWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
-        mPopWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                // popupWindow隐藏时恢复屏幕正常透明度
-                setBackgroundAlpha(1.0f);
-            }
-        });
+        next.setOnClickListener(this);
+        cancel.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.question_ask:
-                showPopupWindow();
+                d.show();
                 break;
             case R.id.type_next:
                 Intent intent = new Intent(Application.getContext(),AskQuestionActivity.class);
                 intent.putExtra("kind",kind);
                 startActivity(intent);
+                break;
+            case R.id.type_cancel:
+                d.dismiss();
+                break;
         }
     }
 
@@ -113,10 +113,24 @@ public class AskQuestionFragment extends Fragment implements View.OnClickListene
         }
     }
 
-    private void setBackgroundAlpha(float bgAlpha) {
-        WindowManager.LayoutParams lp = getActivity().getWindow()
-                .getAttributes();
-        lp.alpha = bgAlpha;
-        getActivity().getWindow().setAttributes(lp);
+    private void setDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater =
+                (LayoutInflater)getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View layout =inflater.inflate(R.layout.popup_choose_type,null);
+        builder.setView(layout);
+        d = builder.create();
+        Window dialogWindow = d.getWindow();
+        dialogWindow.setGravity(Gravity.BOTTOM);
+        WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+        p.height =WindowManager.LayoutParams.WRAP_CONTENT;
+        p.width =WindowManager.LayoutParams.MATCH_PARENT;
+        dialogWindow.setAttributes(p);
+
+        next = layout.findViewById(R.id.type_next);
+        cancel = layout.findViewById(R.id.type_cancel);
+
+
+
     }
 }

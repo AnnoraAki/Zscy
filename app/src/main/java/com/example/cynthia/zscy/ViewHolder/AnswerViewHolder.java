@@ -5,14 +5,19 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.cynthia.httphelper.HttpHelper;
+import com.example.cynthia.httphelper.Response.Callback;
+import com.example.cynthia.httphelper.Response.Response;
 import com.example.cynthia.imageload.ConfigSetting;
 import com.example.cynthia.imageload.ImageLoad;
 import com.example.cynthia.zscy.Activitys.CommentActivity;
 import com.example.cynthia.zscy.Activitys.DetailActivity;
 import com.example.cynthia.zscy.Bean.Answer;
 import com.example.cynthia.zscy.Bean.Question;
+import com.example.cynthia.zscy.Config.Config;
 import com.example.cynthia.zscy.R;
 import com.example.cynthia.zscy.Utils.Application;
+import com.example.cynthia.zscy.Utils.ToastUtils;
 import com.example.cynthia.zscy.widget.CircleView;
 
 import java.util.List;
@@ -33,12 +38,15 @@ public class AnswerViewHolder extends BaseViewHolder implements View.OnClickList
     private TextView lookMore;
 
     private String kind;
+    private int self;
+    private String title;
 
-
-    public AnswerViewHolder(View itemView, final List<Answer> answers,String kind) {
+    public AnswerViewHolder(View itemView, final List<Answer> answers,String kind,int self,String title) {
         super(itemView);
         this.answers = answers;
         this.kind = kind;
+        this.self = self;
+        this.title = title;
 
         avatar = getView(R.id.answer_avatar);
         id = getView(R.id.answer_id);
@@ -52,26 +60,23 @@ public class AnswerViewHolder extends BaseViewHolder implements View.OnClickList
         praiseNum = getView(R.id.answer_praise_num);
 
         lookMore = getView(R.id.answer_look_more);
-        lookMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Answer answer = answers.get(getLayoutPosition());
-                String param = "stuNum="+Application.getAc()+"&idNum="+Application.getPw()+"&answer_id=" + answer.getId();
-                Intent intent = new Intent(v.getContext(), CommentActivity.class);
-                intent.putExtra("param",param);
-                v.getContext().startActivity(intent);
-            }
-        });
+        lookMore.setOnClickListener(this);
+        praise.setOnClickListener(this);
+
     }
 
     public void initData(Answer answer) {
         date.setText(answer.getCreated_at());
         context.setText(answer.getContent());
-        ConfigSetting setting = new ConfigSetting.builder(Application.getContext())
+        if (answer.getPhoto_thumbnail_src().equals("") || answer.getPhoto_thumbnail_src().equals("null")){
+            avatar.setImageResource(R.drawable.default_avatar);
+        } else {
+            ConfigSetting setting = new ConfigSetting.builder(Application.getContext())
                     .error(R.drawable.default_avatar)
                     .from(answer.getPhoto_thumbnail_src())
                     .build();
-        ImageLoad.show(avatar, setting);
+            ImageLoad.show(avatar, setting);
+        }
         id.setText(answer.getNickname());
         if (kind.equals("情感")){
             int res = answer.getGender().equals("男")?R.drawable.ic_answer_man:R.drawable.ic_answer_woman;
@@ -95,13 +100,56 @@ public class AnswerViewHolder extends BaseViewHolder implements View.OnClickList
         Answer answer = answers.get(getLayoutPosition());
         switch (v.getId()) {
             case R.id.answer_look_more:
-                Intent intent = new Intent(v.getContext(), CommentActivity.class);
-                intent.putExtra("aId",answer.getId());
-                v.getContext().startActivity(intent);
+                    Intent intent = new Intent(v.getContext(), CommentActivity.class);
+                    intent.putExtra("aId",answer.getId());
+                    intent.putExtra("kind",kind);
+                    intent.putExtra("answer",answer);
+                    intent.putExtra("self",self);
+                    intent.putExtra("title",title);
+                    v.getContext().startActivity(intent);
                 break;
-            case R.id.answer_accept:
+            case R.id.answer_praise:
+                praise(answer.getIs_praised() == 1,answer);
+                break;
+        }
+    }
 
-                break;
+    private void praise(boolean pra, final Answer answer){
+        String param = "stuNum="+Application.getAc()+"&idNum="+Application.getPw()+"&answer_id=" + answer.getId();
+        if (!pra){
+            HttpHelper helper = new HttpHelper.set().mode("POST").url(Config.PRAISE).param(param).build();
+            new Response.from(helper).get(new Callback() {
+                @Override
+                public void succeed(String response) {
+                    ToastUtils.showResponse("点赞成功！");
+                    praiseNum.setText(Integer.parseInt(answer.getPraise_num())+1+"");
+                    praise.setImageDrawable(Application.getContext().getResources().getDrawable(R.drawable.ic_praise_select));
+                    answer.setIs_praised(1);
+                    answer.setPraise_num(Integer.parseInt(answer.getPraise_num())+1+"");
+                }
+
+                @Override
+                public void error(Exception e, int status) {
+                    ToastUtils.showError("出了点问题...");
+                }
+            });
+        } else {
+            HttpHelper helper = new HttpHelper.set().mode("POST").url(Config.CANCEL_PRAISE).param(param).build();
+            new Response.from(helper).get(new Callback() {
+                @Override
+                public void succeed(String response) {
+                    ToastUtils.showResponse("取消成功！");
+                    praiseNum.setText(Integer.parseInt(answer.getPraise_num())-1+"");
+                    praise.setImageDrawable(Application.getContext().getResources().getDrawable(R.drawable.ic_praise));
+                    answer.setIs_praised(0);
+                    answer.setPraise_num(Integer.parseInt(answer.getPraise_num())+1+"");
+                }
+
+                @Override
+                public void error(Exception e, int status) {
+                    ToastUtils.showError("出了点问题...");
+                }
+            });
         }
     }
 }

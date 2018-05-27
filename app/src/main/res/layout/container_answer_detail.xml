@@ -20,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#80C6C4C5"
+        android:layout_marginTop="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"/>
 
@@ -83,18 +84,15 @@
             android:gravity="right|bottom"
             android:layout_marginBottom="8dp">
 
-            <ImageView
-                android:id="@+id/detail_as_adopt_ic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_answer_accept"/>
-
             <TextView
                 android:id="@+id/detail_as_adopt_word"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:textSize="10sp"
+                android:text="已采纳"
+                android:drawableLeft="@drawable/ic_answer_accept"
+                android:drawablePadding="5dp"
                 android:textColor="#788EFA"
                 />
 

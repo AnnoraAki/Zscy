@@ -25,6 +25,7 @@ public class NoticeViewHolder extends BaseViewHolder {
 
     public static final int TYPE_QUESTION = 0;
     public static final int TYPE_ANSWER = 1;
+    public static final int TYPE_REMARK = 2;
 
     private TextView mTextView;
     boolean loading;
@@ -64,11 +65,10 @@ public class NoticeViewHolder extends BaseViewHolder {
                 JSONArray jsonArray = null;
                 try {
                     jsonObject = new JSONObject(response);
-                    jsonArray = jsonObject.getJSONArray("data");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                if (jsonArray.isNull(0)){
+                if (jsonObject.isNull("data")){
                     mTextView.setText("没有更多了...");
                 } else {
                     addData(response,type,adapter);
@@ -88,8 +88,11 @@ public class NoticeViewHolder extends BaseViewHolder {
         if (type == TYPE_QUESTION){
             List<Question> questions = JsonUtils.jsonQuestions(response);
             ((QuestionAdapter)adapter).addQuestions(questions);
+        } else if (type == TYPE_ANSWER){
+//            todo : json the more answers
+//            List<Answer> answers = JsonUtils.
         } else {
-//            List<Answer> answers
+
         }
 
 

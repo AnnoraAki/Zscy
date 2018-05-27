@@ -25,7 +25,8 @@
         </activity>
         <activity android:name=".Activitys.LogInActivity" />
         <activity android:name=".Activitys.DetailActivity" />
-        <activity android:name=".Activitys.CommentActivity" />
+        <activity android:name=".Activitys.CommentActivity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
         <activity android:name=".Activitys.AskQuestionActivity" />
         <activity android:name=".Activitys.AnswerActivity"></activity>
     </application>

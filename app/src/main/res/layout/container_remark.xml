@@ -47,6 +47,7 @@
         android:background="#40999999"/>
 
     <LinearLayout
+        android:id="@+id/remark_setting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -61,19 +62,14 @@
             android:gravity="center"
             >
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_praise1"
-                />
-
             <TextView
                 android:id="@+id/remark_left_word"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="点赞（26）"
                 android:textColor="#7396FA"
-                android:layout_marginLeft="7dp"/>
+                android:drawablePadding="7dp"
+                android:drawableLeft="@drawable/ic_praise1"/>
 
         </LinearLayout>
 
@@ -91,11 +87,6 @@
             android:orientation="horizontal"
             android:gravity="center">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_comment1"
-                />
 
             <TextView
                 android:id="@+id/remark_right_word"
@@ -103,12 +94,55 @@
                 android:layout_height="wrap_content"
                 android:text="评论（15）"
                 android:textColor="#7396FA"
-                android:layout_marginLeft="7dp"/>
+                android:drawablePadding="7dp"
+                android:drawableLeft="@drawable/ic_comment1"/>
 
         </LinearLayout>
 
 
 
+
     </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/add_remark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:layout_marginBottom="5dp"
+            android:background="#FEFEFE">
+
+
+
+            <EditText
+                android:id="@+id/text_comment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:hint="添加你的评论"
+                android:textSize="13sp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="2dp"
+                android:background="#FEFEFE"
+                />
+
+            <TextView
+                android:id="@+id/send_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="发 布"
+                android:textSize="15sp"
+                android:textColor="#BF7F94FA"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="15dp"
+                android:layout_gravity="center_vertical"/>
+
+        </LinearLayout>
 
 </LinearLayout>

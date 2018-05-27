@@ -1,12 +1,15 @@
 package com.example.cynthia.zscy.Activitys;
 
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,6 +33,7 @@ public class AskQuestionActivity extends BaseActivity implements View.OnClickLis
     private ImageView wantAnonymous;
     private TextView titleFlag;
     private TextView contentFlag;
+    private AlertDialog d;
     private Question question = new Question();
 
     private int maxNum1 = 20;
@@ -134,30 +138,19 @@ public class AskQuestionActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
-    private void showPopupWindow(){
-        View contentView = getLayoutInflater().from(Application.getContext()).inflate(R.layout.popup_choose_type, null);
-        PopupWindow mPopWindow = new PopupWindow(contentView,
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT, true);
-        mPopWindow.setContentView(contentView);
-        View rootView = getLayoutInflater().from(Application.getContext()).inflate(R.layout.fragment_ask_question, null);
-        mPopWindow.setTouchable(true);
-        mPopWindow.setOutsideTouchable(true);
-        setBackgroundAlpha(0.4f);
-        mPopWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
-        mPopWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                // popupWindow隐藏时恢复屏幕正常透明度
-                setBackgroundAlpha(1.0f);
-            }
-        });
-    }
+    private void setDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater =
+                (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
+        View layout =inflater.inflate(R.layout.popup_choose_tag,null);
+        builder.setView(layout);
+        d = builder.create();
+        Window dialogWindow = d.getWindow();
+        dialogWindow.setGravity(Gravity.BOTTOM);
+        WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+        p.height =WindowManager.LayoutParams.WRAP_CONTENT;
+        p.width =WindowManager.LayoutParams.MATCH_PARENT;
+        dialogWindow.setAttributes(p);
 
-    private void setBackgroundAlpha(float bgAlpha) {
-        WindowManager.LayoutParams lp = getWindow()
-                .getAttributes();
-        lp.alpha = bgAlpha;
-        getWindow().setAttributes(lp);
     }
 }

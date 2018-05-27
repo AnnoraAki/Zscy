@@ -66,10 +66,12 @@ public class AnswerActivity extends BaseActivity implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.bar_left_t:
+                Intent intent = new Intent(AnswerActivity.this,DetailActivity.class);
+                intent.putExtra("qId",qId);
+                setResult(1,intent);
                 finish();
                 break;
             case R.id.bar_right_t:
-//              todo : to post the data...
                 String desc = description.getText().toString();
                 if (desc.equals("")){
                     ToastUtils.showError("请填写你的回答哦~");

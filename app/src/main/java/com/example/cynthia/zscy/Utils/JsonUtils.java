@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.cynthia.zscy.Bean.Answer;
 import com.example.cynthia.zscy.Bean.Question;
 import com.example.cynthia.zscy.Bean.QuestionDetail;
+import com.example.cynthia.zscy.Bean.Remark;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -120,5 +121,33 @@ public class JsonUtils {
             e.printStackTrace();
         }
         return detail;
+    }
+
+    public static List<Remark> jsonRemarks(String response){
+        List<Remark> remarks = new ArrayList<>();
+        JSONObject object = null;
+        try {
+            object = new JSONObject(response);
+            if (object.isNull("data")){
+                remarks.clear();
+                return remarks;
+            }
+            JSONArray jsonArray = object.getJSONArray("data");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject object1 = jsonArray.getJSONObject(i);
+                Remark remark = new Remark();
+                remark.setContent(object1.getString("content"));
+                remark.setCreated_at(object1.getString("created_at"));
+                remark.setNickname(object1.getString("nickname"));
+                String temp = object1.getString("photo_thumbnail_src");
+                temp = temp.replaceAll("http","https");
+                remark.setPhoto_thumbnail_src(temp);
+                remark.setGender(object1.getString("gender"));
+                remarks.add(remark);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return remarks;
     }
 }

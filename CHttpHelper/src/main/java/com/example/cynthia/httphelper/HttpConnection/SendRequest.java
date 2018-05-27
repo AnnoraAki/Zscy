@@ -31,9 +31,11 @@ public class SendRequest<T> extends BasicConnection {
                         final String finish = getStringResponse(conn);
                         JSONObject object = null;
                         int sta = 0;
+                        String info = null;
                         try {
                             object = new JSONObject(finish);
                             sta = object.getInt("status");
+                            info = object.getString("info");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -46,15 +48,16 @@ public class SendRequest<T> extends BasicConnection {
                             });
                         }else {
                             final int stat = sta;
+                            final String in = info;
                             UI_HANDLER.post(new Runnable() {
                                 @Override
-                                public void run() {
-                                    callback.error(new Exception("有点问题"), stat);
+                                public void run() { callback.error(new Exception(in), stat);
                                 }
                             });
                         }
 
                     } else {
+
                         UI_HANDLER.post(new Runnable() {
                             @Override
                             public void run() {

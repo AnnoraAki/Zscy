@@ -64,6 +64,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
     private int qId;
     private String kind;
+    private String tl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,20 +86,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         Response response = new Response.from(helper).get(new Callback() {
             @Override
             public void succeed(String response) {
-                JSONObject object = null;
-                int status = 0;
-                try {
-                    object = new JSONObject(response);
-                    status = object.getInt("status");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                if ( status == HttpURLConnection.HTTP_OK){
-                    addData(response);
-                } else {
-                    ToastUtils.showError("没有登录哦~请登录后重试");
-                    finish();
-                }
+                addData(response);
             }
 
             @Override
@@ -122,6 +110,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         String temp = "#"+questionDetail.getTags()+"# "+questionDetail.getDescription();
         context.setText(temp);
         TextUtil.setTVColor(temp,'#','#', Color.parseColor("#7195FA"),context);
+        tl = temp;
         id.setText(questionDetail.getQuestioner_nickname());
         if (questionDetail.getQuestioner_photo_thumbnail_src().equals("") || questionDetail.getQuestioner_photo_thumbnail_src().equals("null")) {
             avatar.setImageResource(R.drawable.default_avatar);
@@ -144,7 +133,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         }
         date.setText(questionDetail.getDisappear_at());
         price.setText(questionDetail.getReward()+"积分");
-        if (questionDetail.getQuestioner_gender() == null){
+        if (kind.equals("情感")||questionDetail.getQuestioner_gender() == null){
             sex.setVisibility(View.GONE);
         } else {
             int res = questionDetail.getQuestioner_gender().equals("男")?R.drawable.ic_answer_man:R.drawable.ic_answer_woman;
@@ -158,7 +147,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
             rightWord.setText("取消提问");
         }
 
-        AnswerAdapter answerAdapter = new AnswerAdapter(questionDetail.getAnswers(),qId,kind);
+        AnswerAdapter answerAdapter = new AnswerAdapter(questionDetail.getAnswers(),qId,kind,questionDetail.getIs_self(),tl);
         mAnswerView.setAdapter(answerAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(Application.getContext());
         mAnswerView.setLayoutManager(layoutManager);

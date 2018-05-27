@@ -6,45 +6,43 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.cynthia.zscy.Bean.Answer;
-import com.example.cynthia.zscy.Bean.Question;
+import com.example.cynthia.zscy.Bean.Remark;
 import com.example.cynthia.zscy.Config.Config;
 import com.example.cynthia.zscy.R;
 import com.example.cynthia.zscy.Utils.Application;
 import com.example.cynthia.zscy.ViewHolder.AnswerViewHolder;
 import com.example.cynthia.zscy.ViewHolder.NoticeViewHolder;
-import com.example.cynthia.zscy.ViewHolder.QuestionViewHolder;
+import com.example.cynthia.zscy.ViewHolder.RemarkViewHolder;
 
 import java.util.List;
 
-public class AnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<Answer> answers;
-    private int qId;
-    private int self;
-    private String kind;
-    private static final int TYPE_NOTICE = 0;
-    private static final int TYPE_ANSWER = 1;
-    private String title;
+public class RemarkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public AnswerAdapter(List<Answer> answers,int qId,String kind,int self,String title) {
-        this.answers = answers;
-        this.qId = qId;
+    private static final int TYPE_NOTICE = 0;
+    private static final int TYPE_REMARK = 1;
+
+    private List<Remark> remarks;
+    private int aId;
+    private String kind;
+
+    public RemarkAdapter(List<Remark> remarks,int aId,String kind){
+        this.remarks = remarks;
+        this.aId = aId;
         this.kind = kind;
-        this.self = self;
-        this.title = title;
     }
 
     @Override
     public int getItemViewType(int position) {
-        return position == getItemCount() - 1 ? TYPE_NOTICE : TYPE_ANSWER;
+        return position == getItemCount() - 1 ? TYPE_NOTICE : TYPE_REMARK;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         switch (viewType) {
-            case TYPE_ANSWER:
-                View view = inflater.inflate(R.layout.recycler_answers, parent, false);
-                return new AnswerViewHolder(view,answers,kind,self,title);
+            case TYPE_REMARK:
+                View view = inflater.inflate(R.layout.recycler_remarks, parent, false);
+                return new RemarkViewHolder(view,kind);
 
             case TYPE_NOTICE:
                 View view1 = inflater.inflate(R.layout.recycler_loading, parent, false);
@@ -56,16 +54,15 @@ public class AnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof AnswerViewHolder) {
-            AnswerViewHolder answerViewHolder= (AnswerViewHolder)holder;
-            answerViewHolder.initData(answers.get(position));
+        if (holder instanceof RemarkViewHolder) {
+            RemarkViewHolder remarkViewHolder = (RemarkViewHolder)holder;
+            remarkViewHolder.loadData(remarks.get(position));
         } else {
             NoticeViewHolder noticeViewHolder = (NoticeViewHolder) holder;
             String param = "stuNum="+ Application.getAc()+
                     "&idNum="+Application.getPw() +
-                    "&page=" + (answers.size() / 6 + 1 ) + "&size=" + 6 + "&question_id=" + qId;
-            noticeViewHolder.loadData(Config.GET_ANSWER_LIST, param, this, NoticeViewHolder.TYPE_ANSWER);
-
+                    "&page=" + (remarks.size() / 6 + 1 ) + "&size=" + 6 + "&answer_id=" + aId;
+            noticeViewHolder.loadData(Config.GET_REMARK_LIST, param, this, NoticeViewHolder.TYPE_REMARK);
 
         }
 
@@ -73,11 +70,11 @@ public class AnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public int getItemCount() {
-        return answers.size() + 1;
+        return remarks.size() + 1;
     }
 
-    public void addAnswers(List<Answer> answers) {
-        this.answers.addAll(answers);
+    public void addRemarks(List<Remark> remarks) {
+        this.remarks.addAll(remarks);
         notifyDataSetChanged();
     }
 }
